@@ -9,6 +9,7 @@ import { heartsFillStorage } from './utils/hertsFillAll';
 import { save, load, remove } from './utils/localStorageJSON';
 import { rend } from './favorite/favorites_main';
 import { Notify } from 'notiflix';
+import instructionsList from '../templates/instructions.hbs ';
 
 const modalRecipeBackDrop = document.querySelector('.recipe-backdrop');
 const modalRecipe = document.querySelector('#modal-recipe');
@@ -54,6 +55,13 @@ async function handleModalRecipe(favoritData) {
 
     const tags = document.querySelector('.tags');
     tags.innerHTML = recipeTags(response.data.tags);
+
+    const sentences = response.data.instructions.split('. ');
+    const sentenceObjects = sentences.map(function (sentence) {
+      return { sentence: sentence };
+    });
+    const instructions = document.querySelector('.recipe-text');
+    instructions.innerHTML = instructionsList(sentenceObjects);
 
     const giveRating = document.querySelector('.btn-giveARating');
     modalRatingOpCl(giveRating, modalRecipeBackDrop);
